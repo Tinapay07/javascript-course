@@ -36,3 +36,9 @@ coverage/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Teaching materials (instructor only)
+00-teaching-materials/
+
+# cursorrules
+/.cursorrules
