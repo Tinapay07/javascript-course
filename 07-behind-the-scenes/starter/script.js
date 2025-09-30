@@ -136,7 +136,7 @@
 // const shallowCopy = { ...original };
 
 // shallowCopy.name = 'Bob';
-// console.log('original name:', original.name); 
+// console.log('original name:', original.name);
 // console.log('copy name:', shallowCopy.name);
 
 // shallowCopy.hobbies.push('gaming');
@@ -158,4 +158,3 @@
 
 // console.log(deepOriginal);
 // console.log(deepCopy);
-
