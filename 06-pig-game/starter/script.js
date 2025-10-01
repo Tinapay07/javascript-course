@@ -2,7 +2,6 @@
 // console.log('=== PIG GAME DEVELOPMENT: FOUNDATION & DICE ROLLING ===');
 // console.log('Pig Game project ready!');
 
-
 // let scores, currentScore, activePlayer, playing;
 // const player0El = document.querySelector('.player--0');
 // const player1El = document.querySelector('.player--1');
@@ -155,19 +154,18 @@
 //     document.getElementById(`score--${activePlayer}`).textContent =
 //       scores[activePlayer];
 //       if (scores[activePlayer] >= 100) {
-      
+
 //       playing = false;
 //       diceEl.classList.add('hidden');
 //       document
 //         .querySelector(`.player--${activePlayer}`)
 //         .classList.add('player--winner');
 
-      
 //       document
 //         .querySelector(`.player--${activePlayer}`)
 //         .classList.remove('player--active');
 //     } else {
-      
+
 //       switchPlayer();
 //     }
 //   }
