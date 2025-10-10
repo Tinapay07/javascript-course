@@ -78,16 +78,159 @@ class Cycling extends Workout {
 }
 
 const run1 = new Running([39.7392, -104.9903], 5.2, 24, 178);
-console.log('Running workout:', run1);
-console.log('Running pace:', run1.pace.toFixed(1), 'min/km');
-console.log('Running description:', run1.description);
+console.log('=== RUNNING WORKOUT ===');
+console.log('Distance:', run1.distance, 'km');
+console.log('Duration:', run1.duration, 'min');
+console.log('Cadence:', run1.cadence, 'spm');
+console.log('Pace:', run1.pace.toFixed(1), 'min/km');
+console.log('Description:', run1.description);
+console.log('ID:', run1.id);
 
 const cycling1 = new Cycling([39.7392, -104.9903], 27, 95, 523);
-console.log('Cycling workout:', cycling1);
-console.log('Cycling speed:', cycling1.speed.toFixed(1), 'km/h');
-console.log('Cycling description:', cycling1.description);
+console.log('=== CYCLING WORKOUT ===');
+console.log('Distance:', cycling1.distance, 'km');
+console.log('Duration:', cycling1.duration, 'min');
+console.log('Elevation Gain:', cycling1.elevationGain, 'm');
+console.log('Speed:', cycling1.speed.toFixed(1), 'km/h');
+console.log('Description:', cycling1.description);
+console.log('ID:', cycling1.id);
 
-run1.click();
-cycling1.click();
-console.log('Run clicks:', run1.clicks);
-console.log('Cycling clicks:', cycling1.clicks);
+console.log('=== INHERITANCE TESTING ===');
+console.log(
+  'Both inherit from Workout:',
+  run1 instanceof Workout,
+  cycling1 instanceof Workout
+);
+
+console.log('=== TESTING GEOLOCATION API ===');
+
+function getPosition() {}
+// Test the geolocation
+getPosition();
+
+function loadMap(position) {
+  const { latitude, longitude } = position.coords;
+  console.log(`Loading map at coordinates: ${latitude}, ${longitude}`);
+
+  const coords = [latitude, longitude];
+
+  const map = L.map('map').setView(coords, 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
+
+  // add a marker blue
+  L.marker(coords).addTo(map).bindPopup('📍 You are here!').openPopup;
+
+  // add click event listener to the map
+  map.on('click', function (mapEvent) {
+    console.log('Map clicked at:', mapEvent);
+    const { lat, lng } = mapEvent.latlng;
+    console.log('Map clicked at: $(lat.toFixed(4))}, $(lng.toFixed(4))');
+
+    L.marker([lat, lng])
+      .addTo(map)
+      .bindPopup(
+        `Workout location<br>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`
+      )
+      .openPopup();
+  });
+
+  console.log('Map loaded Successfully at user location');
+}
+
+function loadDefaultMap() {
+  console.log('Loading default map at (Manila)');
+
+  const defaultCoords = [14.5995, 120.9842]; // Manila coordinates
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
+
+  // add click event listener to the map
+  map.on('click', function (mapEvent) {
+    console.log('Map clicked at:', mapEvent);
+    const { lat, lng } = mapEvent.latlng;
+    console.log('Map clicked at: $(lat.toFixed(4))}, $(lng.toFixed(4))');
+
+    L.marker([lat, lng])
+      .addTo(map)
+      .bindPopup(
+        `Workout location<br>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`
+      )
+      .openPopup();
+  });
+
+  console.log('Default map loaded successfully');
+}
+
+class App {
+  #map;
+  #mapZoomLevel = 13;
+  #mapEvent;
+  #workouts = [];
+
+  constructor() {
+    console.log('App started');
+    this._getPosition();
+  }
+
+  _getPosition() {
+    if (navigator.geolocation) {
+      console.log('🔍 Requesting user location...');
+      navigator.geolocation.getCurrentPosition(
+        loadMap,
+        function (error) {
+          console.error('Geolocation error:', error);
+          // Create a Google Maps link to verify the location
+          const googleMapsUrl = `https://www.google.pt/maps/@${latitude},${longitude}`;
+          console.log(`View on Google Maps: ${googleMapsUrl}`);
+        },
+        function (error) {
+          console.error('Geolocation error:', error);
+
+          let message = 'Could not get your position. ';
+
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              message +=
+                'Location access was denied. Please enable location services and refresh the page.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              message += 'Location information is unavailable.';
+              break;
+            case error.TIMEOUT:
+              message += 'Location request timed out.';
+              break;
+            default:
+              message += 'An unknown error occurred.';
+              break;
+          }
+
+          alert(`📍 ${message}`);
+          loadDefaultMap();
+        },
+        {
+          timeout: 10000,
+          enableHighAccuracy: true,
+          maximumAge: 600000,
+        }
+      );
+    } else {
+      alert('❌ Geolocation is not supported by this browser');
+      loadDefaultMap();
+    }
+  }
+
+  _handleGeolocationError(error) {}
+
+  _loadDefaultMap() {}
+
+  _loadmap() {}
+
+  _showForm(mapE) {}
+}
